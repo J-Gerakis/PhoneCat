@@ -3,25 +3,25 @@
 
     <changeSet id="catalog-01" author="gerakis">
         <createTable tableName="SpecRef">
-            <column name="specRefId" type="bigint" autoIncrement="true">
+            <column name="brand_model" type="varchar(255)">
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="technology" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="_2g" type="varchar(255)">
+            <column name="_2g_bands" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="_3g" type="varchar(255)">
+            <column name="_3g_bands" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="_4g" type="varchar(255)">
+            <column name="_4g_bands" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
         </createTable>
 
         <createTable tableName="Phone">
-            <column name="phoneId" type="bigint" autoIncrement="true">
+            <column name="phone_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="model" type="varchar(255)">
@@ -30,17 +30,14 @@
             <column name="brand" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="isAvailable" type="boolean" defaultValueBoolean="true">
+            <column name="is_available" type="boolean" defaultValueBoolean="true">
                 <constraints nullable="false" />
             </column>
-            <column name="borrowerUsername" type="varchar(255)">
+            <column name="borrower_username" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="borrowDate" type="date">
+            <column name="borrow_date" type="date">
                 <constraints nullable="true" />
-            </column>
-            <column name="specRefId" type="bigint">
-                <constraints nullable="true" foreignKeyName="fk_specRefId" references="SpecRef(specRefId)" />
             </column>
         </createTable>
     </changeSet>
