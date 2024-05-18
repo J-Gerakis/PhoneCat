@@ -1,9 +1,6 @@
 package org.gerakis.phonecat.infrastructure;
 
-
-import com.google.gson.annotations.SerializedName;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,7 +1,6 @@
 package org.gerakis.phonecat.service.mapper;
 
 import org.gerakis.phonecat.infrastructure.SpecificationEntity;
-import org.gerakis.phonecat.service.dto.FonoApiResponseDTO;
 import org.gerakis.phonecat.service.dto.SpecificationDTO;
 
 public class SpecMapper {
