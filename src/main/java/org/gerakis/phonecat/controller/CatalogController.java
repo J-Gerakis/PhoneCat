@@ -2,6 +2,7 @@ package org.gerakis.phonecat.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.gerakis.phonecat.controller.dto.NewPhoneRequestDTO;
 import org.gerakis.phonecat.service.CatalogMaintenanceService;
 import org.gerakis.phonecat.service.dto.NewPhoneDTO;
 import org.gerakis.phonecat.service.dto.PhoneDTO;
@@ -32,8 +33,8 @@ public class CatalogController {
 
     @PostMapping("add")
     public String addNewPhone(@RequestBody String body) {
-        NewPhoneDTO newPhoneDTO = gson.fromJson(body, NewPhoneDTO.class);
-        return catalogService.addNewPhone(newPhoneDTO).toString();
+        NewPhoneRequestDTO newPhoneReqDTO = gson.fromJson(body, NewPhoneRequestDTO.class);
+        return catalogService.addNewPhone(newPhoneReqDTO).toString();
     }
 
     @GetMapping("list")

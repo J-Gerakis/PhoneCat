@@ -13,6 +13,7 @@ public record PhoneDTO(
         @SerializedName("borrower_username") String borrowerUsername,
         @SerializedName("borrow_date") LocalDateTime borrowDate
 ) {
+
     public PhoneDTO updateAsBooked(String borrowerUsername) {
         return new PhoneDTO(phoneId, brand, model, false, borrowerUsername, LocalDateTime.now());
     }

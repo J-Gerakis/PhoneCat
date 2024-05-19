@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.gerakis.phonecat.service.dto.FonoApiResponseDTO;
 import org.gerakis.phonecat.service.dto.SpecificationDTO;
+import org.gerakis.phonecat.service.mapper.SpecMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -41,7 +42,7 @@ public class ApiCallService {
             FonoApiResponseDTO responseDTO = gson.fromJson(content, FonoApiResponseDTO.class);
             if(responseDTO != null){
                 return new SpecificationDTO(
-                        format(brand, model),
+                        SpecMapper.formatBrandModel(brand, model),
                         responseDTO.technology(),
                         responseDTO._2gs_bands(),
                         responseDTO._3gs_bands(),
@@ -54,10 +55,6 @@ public class ApiCallService {
             //log
             return null;
         }
-    }
-
-    private String format(String brand, String model) {
-        return (brand.toLowerCase() + "_" + model.toLowerCase()).replaceAll(" ", "_");
     }
 
 }

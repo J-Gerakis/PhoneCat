@@ -1,8 +1,10 @@
 package org.gerakis.phonecat.service;
 
+import org.gerakis.phonecat.controller.dto.NewPhoneRequestDTO;
 import org.gerakis.phonecat.service.dto.NewPhoneDTO;
 import org.gerakis.phonecat.service.dto.PhoneDTO;
 import org.gerakis.phonecat.service.dto.SpecificationDTO;
+import org.gerakis.phonecat.service.mapper.SpecMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +25,18 @@ public class CatalogMaintenanceService {
         this.apiCallService = apiCallService;
     }
 
-    public Long addNewPhone(NewPhoneDTO newPhoneDTO) {
+    public Long addNewPhone(NewPhoneRequestDTO newPhoneReqDTO) {
+        SpecificationDTO specDto;
+        NewPhoneDTO newPhoneDTO = new NewPhoneDTO(newPhoneReqDTO.brand(), newPhoneReqDTO.model());
         //query fonoAPI here
         if(fonoActive) {
-            SpecificationDTO specDto = apiCallService.getDeviceInfo(newPhoneDTO.brand(), newPhoneDTO.model());
-            if(specDto != null) {
-                databaseService.addSpecification(specDto);
-            }
+            specDto = apiCallService.getDeviceInfo(newPhoneReqDTO.brand(), newPhoneReqDTO.model());
+        } else {
+            specDto = SpecMapper.fromNewPhoneRequest(newPhoneReqDTO);
         }
-
+        if(specDto != null) {
+            databaseService.addSpecification(specDto);
+        }
         return databaseService.addPhone(newPhoneDTO);
     }
 

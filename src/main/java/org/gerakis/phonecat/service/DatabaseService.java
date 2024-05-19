@@ -58,7 +58,7 @@ public class DatabaseService {
     }
 
     public List<PhoneDTO> getAllPhones() {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder(); //change for Full Phone record (typed query)
         CriteriaQuery<PhoneDTO> query = cb.createQuery(PhoneDTO.class);
         Root<PhoneEntity> root = query.from(PhoneEntity.class);
         query.select(cb.construct(PhoneDTO.class,
