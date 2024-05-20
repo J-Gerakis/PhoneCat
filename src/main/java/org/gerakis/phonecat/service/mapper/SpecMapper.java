@@ -2,11 +2,13 @@ package org.gerakis.phonecat.service.mapper;
 
 import org.gerakis.phonecat.controller.dto.NewPhoneRequestDTO;
 import org.gerakis.phonecat.infrastructure.SpecificationEntity;
+import org.gerakis.phonecat.service.dto.NewSpecificationDTO;
 import org.gerakis.phonecat.service.dto.SpecificationDTO;
 
 public class SpecMapper {
     public static SpecificationEntity dtoToEntity(SpecificationDTO dto) {
         SpecificationEntity entity = new SpecificationEntity();
+        entity.setSpecRefId(dto.specRefId());
         entity.setBrandModel(dto.brandModel());
         entity.setTechnology(dto.technology());
         entity.setBands2g(dto.bands2g());
@@ -15,8 +17,8 @@ public class SpecMapper {
         return entity;
     }
 
-    public static SpecificationDTO fromNewPhoneRequest(NewPhoneRequestDTO newRequestDTO) {
-        return new SpecificationDTO(
+    public static NewSpecificationDTO fromNewPhoneRequest(NewPhoneRequestDTO newRequestDTO) {
+        return new NewSpecificationDTO(
                 formatBrandModel(newRequestDTO.brand(), newRequestDTO.model()),
                 newRequestDTO.technology(),
                 newRequestDTO.bands2g(),

@@ -2,8 +2,7 @@ package org.gerakis.phonecat.service.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-public record SpecificationDTO(
-        @SerializedName("spec_ref_id") Long specRefId,
+public record NewSpecificationDTO(
         @SerializedName("brand_model") String brandModel,
         String technology,
         @SerializedName("_2g_bands") String bands2g,

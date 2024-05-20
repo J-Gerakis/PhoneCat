@@ -3,8 +3,29 @@ package org.gerakis.phonecat.infrastructure;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.gerakis.phonecat.service.dto.FullPhoneRecordDTO;
 
 import java.time.LocalDateTime;
+
+@SqlResultSetMapping(name = "Phone.fullRecord",
+        classes = @ConstructorResult(targetClass = FullPhoneRecordDTO.class, columns = {
+        @ColumnResult(name = "phone_id", type = Long.class),
+        @ColumnResult(name = "brand", type = String.class),
+        @ColumnResult(name = "model", type = String.class),
+        @ColumnResult(name = "is_available", type = Boolean.class),
+        @ColumnResult(name = "borrower_username", type = String.class),
+        @ColumnResult(name = "borrow_date", type = LocalDateTime.class),
+        @ColumnResult(name = "technology", type = String.class),
+        @ColumnResult(name = "_2g_bands", type = String.class),
+        @ColumnResult(name = "_3g_bands", type = String.class),
+        @ColumnResult(name = "_4g_bands", type = String.class),
+}))
+@NamedNativeQuery(name = "Phone.findFullRecord", query = "SELECT ph.phone_id, ph.brand, ph.model, ph.is_available, ph.borrower_username, ph.borrow_date, sp.technology, sp._2g_bands, sp._3g_bands, sp._4g_bands " +
+        "FROM Phone ph LEFT JOIN Spec_Ref sp ON ph.spec_ref_id = sp.spec_ref_id WHERE ph.phone_id = :id", resultSetMapping = "Phone.fullRecord")
+
+@NamedNativeQuery(name = "Phone.search", query = "SELECT ph.phone_id, ph.brand, ph.model, ph.is_available, ph.borrower_username, ph.borrow_date, sp.technology, sp._2g_bands, sp._3g_bands, sp._4g_bands " +
+        "FROM Phone ph LEFT JOIN Spec_Ref sp ON ph.spec_ref_id = sp.spec_ref_id WHERE ph.brand = :brand AND ph.model = :model AND ph.is_available = :avail", resultSetMapping = "Phone.fullRecord")
+
 
 @Entity
 @Table(name = "Phone")
@@ -30,6 +51,9 @@ public class PhoneEntity {
 
     @Column(name = "borrow_date")
     LocalDateTime borrowDate;
+
+    @Column(name = "spec_ref_id")
+    Long specRefId;
 
     public PhoneEntity() {}
 }

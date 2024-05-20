@@ -26,7 +26,7 @@ public class BookingService {
             }
             if(phone.isAvailable()) {
                 phone = phone.updateAsBooked(username);
-                databaseService.update(phone);
+                databaseService.updatePhone(phone);
                 confirmed = true;
                 message = BOOKING_CONFIRMED;
             } else {
@@ -46,7 +46,7 @@ public class BookingService {
             PhoneDTO phone = databaseService.getPhone(phoneId);
             if(phone != null) {
                 phone = phone.updateAsAvailable();
-                databaseService.update(phone);
+                databaseService.updatePhone(phone);
                 return new BookingInformationDTO(phoneId,
                         phone.borrowerUsername(),
                         phone.borrowDate(),

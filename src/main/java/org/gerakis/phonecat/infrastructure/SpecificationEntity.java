@@ -5,11 +5,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "SpecRef")
+@Table(name = "Spec_Ref")
 @Getter
 @Setter
 public class SpecificationEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "spec_ref_id", nullable = false)
+    Long specRefId;
+
     @Column(name = "brand_model", nullable = false)
     String brandModel;
 

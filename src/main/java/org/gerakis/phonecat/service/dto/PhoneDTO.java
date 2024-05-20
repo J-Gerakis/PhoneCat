@@ -11,15 +11,16 @@ public record PhoneDTO(
         String model,
         @SerializedName("is_available") Boolean isAvailable,
         @SerializedName("borrower_username") String borrowerUsername,
-        @SerializedName("borrow_date") LocalDateTime borrowDate
+        @SerializedName("borrow_date") LocalDateTime borrowDate,
+        @SerializedName("spec_ref_id") Long specRefId
 ) {
 
     public PhoneDTO updateAsBooked(String borrowerUsername) {
-        return new PhoneDTO(phoneId, brand, model, false, borrowerUsername, LocalDateTime.now());
+        return new PhoneDTO(phoneId, brand, model, false, borrowerUsername, LocalDateTime.now(), specRefId);
     }
 
     public PhoneDTO updateAsAvailable() {
-        return new PhoneDTO(phoneId, brand, model, true, Strings.EMPTY, null);
+        return new PhoneDTO(phoneId, brand, model, true, Strings.EMPTY, null, specRefId);
     }
 
 }

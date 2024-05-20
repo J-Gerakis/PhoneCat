@@ -1,9 +1,7 @@
 package org.gerakis.phonecat.service;
 
 import org.gerakis.phonecat.controller.dto.NewPhoneRequestDTO;
-import org.gerakis.phonecat.service.dto.NewPhoneDTO;
-import org.gerakis.phonecat.service.dto.PhoneDTO;
-import org.gerakis.phonecat.service.dto.SpecificationDTO;
+import org.gerakis.phonecat.service.dto.*;
 import org.gerakis.phonecat.service.mapper.SpecMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,21 +24,22 @@ public class CatalogMaintenanceService {
     }
 
     public Long addNewPhone(NewPhoneRequestDTO newPhoneReqDTO) {
-        SpecificationDTO specDto;
-        NewPhoneDTO newPhoneDTO = new NewPhoneDTO(newPhoneReqDTO.brand(), newPhoneReqDTO.model());
+        NewSpecificationDTO specDto = null;
+        NewPhoneDTO newPhoneDTO = new NewPhoneDTO(newPhoneReqDTO.brand(), newPhoneReqDTO.model(), null);
         //query fonoAPI here
         if(fonoActive) {
             specDto = apiCallService.getDeviceInfo(newPhoneReqDTO.brand(), newPhoneReqDTO.model());
-        } else {
+        }
+        if(specDto == null) {
+            //check if exist else
             specDto = SpecMapper.fromNewPhoneRequest(newPhoneReqDTO);
         }
-        if(specDto != null) {
-            databaseService.addSpecification(specDto);
-        }
+        Long specRefId = databaseService.addSpecification(specDto);
+        newPhoneDTO = newPhoneDTO.withSpecRefId(specRefId);
         return databaseService.addPhone(newPhoneDTO);
     }
 
-    public String addNewSpecification(SpecificationDTO specDto) {
+    public String addNewSpecification(NewSpecificationDTO specDto) {
         databaseService.addSpecification(specDto);
         return specDto.brandModel();
     }
@@ -48,5 +47,9 @@ public class CatalogMaintenanceService {
     public List<PhoneDTO> getAllPhones() {
         //add filter criteria here
         return databaseService.getAllPhones();
+    }
+
+    public FullPhoneRecordDTO getFullPhoneRecord(Long phoneId) {
+        return databaseService.getFullPhoneRecord(phoneId);
     }
 }

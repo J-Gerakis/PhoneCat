@@ -2,9 +2,12 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="catalog-01" author="gerakis">
-        <createTable tableName="SpecRef">
-            <column name="brand_model" type="varchar(255)">
+        <createTable tableName="Spec_Ref">
+            <column name="spec_ref_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="brand_model" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
             <column name="technology" type="varchar(255)">
                 <constraints nullable="true" />
@@ -38,6 +41,9 @@
             </column>
             <column name="borrow_date" type="date">
                 <constraints nullable="true" />
+            </column>
+            <column name="spec_ref_id" type="bigint">
+                <constraints nullable="true" foreignKeyName="fk_specref" references="Spec_Ref(spec_ref_id)" />
             </column>
         </createTable>
     </changeSet>

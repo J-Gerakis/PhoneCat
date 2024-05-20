@@ -3,7 +3,7 @@ package org.gerakis.phonecat.service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.gerakis.phonecat.service.dto.FonoApiResponseDTO;
-import org.gerakis.phonecat.service.dto.SpecificationDTO;
+import org.gerakis.phonecat.service.dto.NewSpecificationDTO;
 import org.gerakis.phonecat.service.mapper.SpecMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class ApiCallService {
         this.gson = new GsonBuilder().serializeNulls().create();
     }
 
-    public SpecificationDTO getDeviceInfo(String brand, String model) {
+    public NewSpecificationDTO getDeviceInfo(String brand, String model) {
         Map<String, String> params = new HashMap<>();
         params.put("brand", brand);
         params.put("device", model);
@@ -41,7 +41,7 @@ public class ApiCallService {
             String content = template.getForObject(getDeviceUrl, String.class, params);
             FonoApiResponseDTO responseDTO = gson.fromJson(content, FonoApiResponseDTO.class);
             if(responseDTO != null){
-                return new SpecificationDTO(
+                return new NewSpecificationDTO(
                         SpecMapper.formatBrandModel(brand, model),
                         responseDTO.technology(),
                         responseDTO._2gs_bands(),

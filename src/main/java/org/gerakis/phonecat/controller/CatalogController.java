@@ -43,4 +43,9 @@ public class CatalogController {
         return gson.toJson(list);
     }
 
+    @GetMapping("{phone_id}")
+    public String getById(@PathVariable("phone_id") Long phoneId) {
+        return gson.toJson(catalogService.getFullPhoneRecord(phoneId));
+    }
+
 }
