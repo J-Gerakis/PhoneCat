@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+@NamedNativeQuery(name = "Spec.search", query = "SELECT * FROM Spec_Ref sp WHERE sp.brand_model = :brandmodel")
+
+
 @Entity
 @Table(name = "Spec_Ref")
 @Getter

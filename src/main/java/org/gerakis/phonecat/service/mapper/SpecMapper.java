@@ -16,6 +16,17 @@ public class SpecMapper {
         entity.setBands4g(dto.bands4g());
         return entity;
     }
+    public static SpecificationDTO entityToDto (SpecificationEntity entity) {
+        return new SpecificationDTO(
+                entity.getSpecRefId(),
+                entity.getBrandModel(),
+                entity.getTechnology(),
+                entity.getBands2g(),
+                entity.getBands3g(),
+                entity.getBands4g()
+        );
+    }
+
 
     public static NewSpecificationDTO fromNewPhoneRequest(NewPhoneRequestDTO newRequestDTO) {
         return new NewSpecificationDTO(
@@ -28,7 +39,7 @@ public class SpecMapper {
     }
 
     public static String formatBrandModel(String brand, String model) {
-        return (brand.toLowerCase() + "_" + model.toLowerCase()).replaceAll(" ", "_");
+        return (brand.toLowerCase() + "_" + model.toLowerCase()).trim().replaceAll(" ", "_");
     }
 
 }
