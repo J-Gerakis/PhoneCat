@@ -1,4 +1,4 @@
-package org.gerakis.phonecat.infrastructure;
+package org.gerakis.phonecat.data;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 @NamedNativeQuery(name = "Phone.search", query = "SELECT ph.phone_id, ph.brand, ph.model, ph.is_available, ph.borrower_username, ph.borrow_date, sp.technology, sp._2g_bands, sp._3g_bands, sp._4g_bands " +
         "FROM Phone ph LEFT JOIN Spec_Ref sp ON ph.spec_ref_id = sp.spec_ref_id", resultSetMapping = "Phone.fullRecord")
 
+@NamedNativeQuery(name = "Phone.updateSpec", query = "UPDATE Phone ph SET ph.spec_ref_id = :spec_ref_id WHERE UPPER(brand) = UPPER(:brand) AND UPPER(model) = UPPER(:model)")
 
 @Entity
 @Table(name = "Phone")

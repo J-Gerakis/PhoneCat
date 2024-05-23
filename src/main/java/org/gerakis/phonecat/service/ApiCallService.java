@@ -2,9 +2,11 @@ package org.gerakis.phonecat.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.gerakis.phonecat.service.dto.FonoApiResponseDTO;
-import org.gerakis.phonecat.service.dto.NewSpecificationDTO;
-import org.gerakis.phonecat.service.mapper.SpecMapper;
+import org.gerakis.phonecat.controller.dto.NewSpecificationDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
@@ -15,6 +17,8 @@ import java.util.Map;
 
 @Service
 public class ApiCallService {
+
+    public final static Logger logger = LogManager.getLogger(ApiCallService.class);
 
     @Value("${fonoapi.token}")
     private String token;
@@ -39,22 +43,24 @@ public class ApiCallService {
         try{
 
             String content = template.getForObject(getDeviceUrl, String.class, params);
+            logger.debug(content);
             FonoApiResponseDTO responseDTO = gson.fromJson(content, FonoApiResponseDTO.class);
             if(responseDTO != null){
                 return new NewSpecificationDTO(
-                        SpecMapper.formatBrandModel(brand, model),
+                        brand,
+                        model,
                         responseDTO.technology(),
                         responseDTO._2gs_bands(),
                         responseDTO._3gs_bands(),
                         responseDTO._4gs_bands()
                 );
-            } else return null;
+            }
+            logger.warn("no response from FonoAPI");
 
-
-        } catch (RestClientException rce) {
-            //log
-            return null;
+        } catch (RestClientException | JsonSyntaxException ex){
+            logger.error(ex);
         }
+        return null;
     }
 
 }

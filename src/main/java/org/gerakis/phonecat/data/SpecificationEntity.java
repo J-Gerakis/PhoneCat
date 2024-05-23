@@ -1,4 +1,4 @@
-package org.gerakis.phonecat.infrastructure;
+package org.gerakis.phonecat.data;
 
 import jakarta.persistence.*;
 import lombok.Getter;

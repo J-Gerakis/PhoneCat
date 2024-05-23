@@ -1,6 +1,6 @@
 package org.gerakis.phonecat.service.mapper;
 
-import org.gerakis.phonecat.infrastructure.PhoneEntity;
+import org.gerakis.phonecat.data.PhoneEntity;
 import org.gerakis.phonecat.service.dto.PhoneDTO;
 
 public class PhoneMapper {

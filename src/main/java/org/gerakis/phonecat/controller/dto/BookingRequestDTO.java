@@ -6,4 +6,7 @@ public record BookingRequestDTO(
         @SerializedName("phone_id") Long phoneId,
         String username
 ) {
+    public BookingRequestDTO {
+        username = username.trim().replaceAll("[^a-zA-Z0-9]", "");
+    }
 }
