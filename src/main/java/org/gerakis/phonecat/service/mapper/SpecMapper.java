@@ -10,7 +10,8 @@ public class SpecMapper {
     public static SpecificationDTO entityToDto (SpecificationEntity entity) {
         return new SpecificationDTO(
                 entity.getSpecRefId(),
-                entity.getBrandModel(),
+                entity.getBrand(),
+                entity.getModel(),
                 entity.getTechnology(),
                 entity.getBands2g(),
                 entity.getBands3g(),
@@ -27,10 +28,6 @@ public class SpecMapper {
                 newRequestDTO.bands3g(),
                 newRequestDTO.bands4g()
         );
-    }
-
-    public static String formatBrandModel(String brand, String model) {
-        return (brand.toLowerCase() + "_" + model.toLowerCase()).trim().replaceAll(" ", "_");
     }
 
 }

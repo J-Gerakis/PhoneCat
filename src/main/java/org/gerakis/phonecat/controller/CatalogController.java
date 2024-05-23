@@ -13,7 +13,7 @@ import org.gerakis.phonecat.service.CatalogMaintenanceService;
 import org.gerakis.phonecat.service.dto.FullPhoneRecordDTO;
 import org.gerakis.phonecat.controller.dto.NewSpecificationDTO;
 import org.gerakis.phonecat.util.DateAdapter;
-import org.gerakis.phonecat.util.SearchParam;
+import org.gerakis.phonecat.util.FilterUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -51,6 +51,9 @@ public class CatalogController {
         try {
             logger.debug(body);
             NewPhoneRequestDTO newPhoneReqDTO = gson.fromJson(body, NewPhoneRequestDTO.class);
+            if(newPhoneReqDTO.brand().isEmpty() || newPhoneReqDTO.model().isEmpty()) {
+                throw new PhoneCatException("Brand and model required to add a new phone");
+            }
             Long newPhoneId = catalogService.addNewPhone(newPhoneReqDTO);
             logger.debug("phone created {}", newPhoneId);
             return gson.toJson(new MessageDTO(MSG_PHONE_CREATED, newPhoneId));
@@ -74,7 +77,10 @@ public class CatalogController {
         try {
             logger.debug(body);
             NewSpecificationDTO newSpectDto = gson.fromJson(body, NewSpecificationDTO.class);
-            Long newSpecId = catalogService.addNewSpecification(newSpectDto);
+            if(newSpectDto.brand().isEmpty() || newSpectDto.model().isEmpty()) {
+                throw new PhoneCatException("Brand and model required to create a new specification");
+            }
+            Long newSpecId = catalogService.addOrUpdateNewSpecification(newSpectDto);
             return gson.toJson(new MessageDTO(MSG_SPECIFICATION, newSpecId));
         } catch (JsonSyntaxException jse) {
             logger.error(jse);
@@ -83,13 +89,13 @@ public class CatalogController {
     }
 
     @GetMapping("list")
-    public String getList(@PathParam(SearchParam.BRAND) Optional<String> brand,
-                          @PathParam(SearchParam.MODEL) Optional<String> model,
-                          @PathParam(SearchParam.AVAILABLE) Optional<String> available) {
+    public String getList(@PathParam(FilterUtil.BRAND) Optional<String> brand,
+                          @PathParam(FilterUtil.MODEL) Optional<String> model,
+                          @PathParam(FilterUtil.AVAILABLE) Optional<String> available) {
         Map<String, String> filterParam = new HashMap<>();
-        brand.ifPresent(s -> filterParam.put(SearchParam.BRAND, s));
-        model.ifPresent(s -> filterParam.put(SearchParam.MODEL, s));
-        available.ifPresent(s -> filterParam.put(SearchParam.AVAILABLE, s));
+        brand.ifPresent(s -> filterParam.put(FilterUtil.BRAND, s));
+        model.ifPresent(s -> filterParam.put(FilterUtil.MODEL, s));
+        available.ifPresent(s -> filterParam.put(FilterUtil.AVAILABLE, s));
         logger.debug("Filter param: {}, {}, {}", brand, model, available);
         List<FullPhoneRecordDTO> list = catalogService.getAllPhones(filterParam);
         logger.debug("List size: {}", list.size());

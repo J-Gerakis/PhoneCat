@@ -2,6 +2,8 @@ package org.gerakis.phonecat.controller.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import static org.gerakis.phonecat.util.FilterUtil.ALPHANUM_ONLY;
+
 public record NewSpecificationDTO(
         @SerializedName("brand") String brand,
         @SerializedName("model") String model,
@@ -12,11 +14,11 @@ public record NewSpecificationDTO(
 ) {
     public NewSpecificationDTO {
         //sanitization
-        brand = brand.trim().replaceAll("[^a-zA-Z0-9]", "");
-        model = model.trim().replaceAll("[^a-zA-Z0-9]", "");
-        technology = technology.trim().replaceAll("[^a-zA-Z0-9]", "");
-        bands2g = bands2g.trim().replaceAll("[^a-zA-Z0-9]", "");
-        bands3g = bands2g.trim().replaceAll("[^a-zA-Z0-9]", "");
-        bands4g = bands2g.trim().replaceAll("[^a-zA-Z0-9]", "");
+        brand = brand.strip().replaceAll(ALPHANUM_ONLY, "");
+        model = model.strip().replaceAll(ALPHANUM_ONLY, "");
+        technology = technology.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands2g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands3g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands4g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
     }
 }

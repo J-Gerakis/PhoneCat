@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public record SpecificationDTO(
         @SerializedName("spec_ref_id") Long specRefId,
-        @SerializedName("brand_model") String brandModel,
+        @SerializedName("brand") String brand,
+        @SerializedName("model") String model,
         String technology,
         @SerializedName("_2g_bands") String bands2g,
         @SerializedName("_3g_bands") String bands3g,

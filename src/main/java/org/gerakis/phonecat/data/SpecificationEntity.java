@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@NamedNativeQuery(name = "Spec.search", query = "SELECT * FROM Spec_Ref sp WHERE sp.brand_model = :brandmodel")
+@NamedNativeQuery(name = "Spec.search",
+        query = "SELECT * FROM Spec_Ref sp WHERE UPPER(sp.brand) = UPPER(:brand) AND UPPER(sp.model) = UPPER(:model)",
+        resultClass = SpecificationEntity.class)
 
 
 @Entity
@@ -17,8 +19,11 @@ public class SpecificationEntity {
     @Column(name = "spec_ref_id", nullable = false)
     Long specRefId;
 
-    @Column(name = "brand_model", nullable = false)
-    String brandModel;
+    @Column(name = "brand", nullable = false)
+    String brand;
+
+    @Column(name = "model", nullable = false)
+    String model;
 
     @Column(name="technology")
     String technology;

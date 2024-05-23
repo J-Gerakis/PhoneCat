@@ -6,7 +6,10 @@
             <column name="spec_ref_id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="brand_model" type="varchar(255)">
+            <column name="brand" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="model" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="technology" type="varchar(255)">
@@ -28,7 +31,7 @@
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="model" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
             <column name="brand" type="varchar(255)">
                 <constraints nullable="false" />

@@ -3,6 +3,7 @@ package org.gerakis.phonecat.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.Strings;
+import org.gerakis.phonecat.data.PhoneCatRepository;
 import org.gerakis.phonecat.service.dto.BookingInformationDTO;
 import org.gerakis.phonecat.service.dto.PhoneDTO;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,14 @@ public class BookingService {
     private static final String RETURNED = "phone returned";
     private static final String NOTFOUND = "phone not found";
 
-    public final DatabaseService databaseService;
+    public final PhoneCatRepository phoneCatRepository;
 
-    public BookingService(DatabaseService databaseService) {
-        this.databaseService = databaseService;
+    public BookingService(PhoneCatRepository databaseService) {
+        this.phoneCatRepository = databaseService;
     }
 
     public BookingInformationDTO bookPhone(String username, Long phoneId) {
-        Optional<PhoneDTO> optPhone = databaseService.getPhone(phoneId);
+        Optional<PhoneDTO> optPhone = phoneCatRepository.getPhone(phoneId);
         boolean confirmed;
         String message;
         if(optPhone.isEmpty()) {
@@ -39,7 +40,7 @@ public class BookingService {
             PhoneDTO phone = optPhone.get();
             if (phone.isAvailable()) {
                 phone = phone.updateAsBooked(username);
-                databaseService.updatePhone(phone);
+                phoneCatRepository.updatePhone(phone);
                 confirmed = true;
                 message = BOOKING_CONFIRMED;
                 logger.debug("booking confirmed: {}", phoneId);
@@ -59,7 +60,7 @@ public class BookingService {
     }
 
     public BookingInformationDTO returnPhone(Long phoneId) {
-        Optional<PhoneDTO> optPhone = databaseService.getPhone(phoneId);
+        Optional<PhoneDTO> optPhone = phoneCatRepository.getPhone(phoneId);
         boolean confirmed;
         String message;
         String username;
@@ -67,7 +68,7 @@ public class BookingService {
         if(optPhone.isPresent()) {
             PhoneDTO phone = optPhone.get();
             phone = phone.updateAsAvailable();
-            databaseService.updatePhone(phone);
+            phoneCatRepository.updatePhone(phone);
             username = phone.borrowerUsername();
             bookingTime = phone.borrowDate();
             confirmed = true;
