@@ -65,6 +65,7 @@ public class PhoneCatRepository {
         namedQuery.setParameter("model", model);
         namedQuery.setParameter("spec_ref_id", specRefId);
         namedQuery.executeUpdate();
+        entityManager.flush();
     }
 
     private SpecificationEntity findSpecificationEntry(String brand, String model) {
@@ -122,8 +123,13 @@ public class PhoneCatRepository {
     }
 
     public void deletePhone(Long phoneId) {
-        logger.debug("deleting phone entity id:{}", phoneId);
-        entityManager.remove(phoneId);
+        PhoneEntity phone = entityManager.find(PhoneEntity.class, phoneId);
+        if(phone != null) {
+            logger.debug("deleting phone entity id:{}", phoneId);
+            entityManager.remove(phone);
+        } else {
+            logger.debug("Phone id {} didn't exist in the database", phoneId);
+        }
     }
 
 }

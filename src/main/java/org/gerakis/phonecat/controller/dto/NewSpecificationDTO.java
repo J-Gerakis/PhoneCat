@@ -18,7 +18,7 @@ public record NewSpecificationDTO(
         model = model.strip().replaceAll(ALPHANUM_ONLY, "");
         technology = technology.strip().replaceAll(ALPHANUM_ONLY, "");
         bands2g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
-        bands3g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
-        bands4g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands3g = bands3g.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands4g = bands4g.strip().replaceAll(ALPHANUM_ONLY, "");
     }
 }

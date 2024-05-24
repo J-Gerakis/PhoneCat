@@ -16,12 +16,12 @@ public class BookingService {
 
     public final static Logger logger = LogManager.getLogger(BookingService.class);
 
-    private static final String BOOKING_CONFIRMED = "booking confirmed";
-    private static final String UNAVAILABLE = "phone unavailable";
-    private static final String RETURNED = "phone returned";
-    private static final String NOTFOUND = "phone not found";
+    public static final String BOOKING_CONFIRMED = "booking confirmed";
+    public static final String UNAVAILABLE = "phone unavailable";
+    public static final String RETURNED = "phone returned";
+    public static final String NOTFOUND = "phone not found";
 
-    public final PhoneCatRepository phoneCatRepository;
+    private final PhoneCatRepository phoneCatRepository;
 
     public BookingService(PhoneCatRepository databaseService) {
         this.phoneCatRepository = databaseService;
@@ -67,12 +67,12 @@ public class BookingService {
         LocalDateTime bookingTime;
         if(optPhone.isPresent()) {
             PhoneDTO phone = optPhone.get();
-            phone = phone.updateAsAvailable();
-            phoneCatRepository.updatePhone(phone);
             username = phone.borrowerUsername();
             bookingTime = phone.borrowDate();
             confirmed = true;
             message = RETURNED;
+            phone = phone.updateAsAvailable();
+            phoneCatRepository.updatePhone(phone);
             logger.debug("return updated: {}", phoneId);
         } else {
             username = Strings.EMPTY;
