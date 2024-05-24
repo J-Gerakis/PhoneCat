@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.gerakis.phonecat.util.FilterUtil.ALPHANUM_ONLY;
+
 @RestController("Catalog Content Controller")
 @RequestMapping(path = "${api.name}/${api.version}/phones")
 public class CatalogController {
@@ -51,7 +53,8 @@ public class CatalogController {
         try {
             logger.debug(body);
             NewPhoneRequestDTO newPhoneReqDTO = gson.fromJson(body, NewPhoneRequestDTO.class);
-            if(newPhoneReqDTO.brand().isEmpty() || newPhoneReqDTO.model().isEmpty()) {
+            if(newPhoneReqDTO.brand().strip().replaceAll(ALPHANUM_ONLY, "").isEmpty()
+                    || newPhoneReqDTO.model().strip().replaceAll(ALPHANUM_ONLY, "").isEmpty()) {
                 throw new PhoneCatException("Brand and model required to add a new phone");
             }
             Long newPhoneId = catalogService.addNewPhone(newPhoneReqDTO);

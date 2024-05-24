@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest(classes=org.gerakis.phonecat.PhoneCatApplication.class,
         properties = {"spring.datasource.url=jdbc:h2:mem:phonecat_test_db", "spring.liquibase.contexts=test"} )
@@ -28,7 +29,6 @@ public class BookingServiceTest {
     Long phoneId;
 
     @BeforeEach
-    @Transactional
     public void setup() {
         this.repository = new PhoneCatRepository();
         ReflectionTestUtils.setField(repository, "entityManager", entityManager);
@@ -37,7 +37,6 @@ public class BookingServiceTest {
     }
 
     @Test
-    @Transactional
     public void bookingTest() {
         BookingInformationDTO bookInfo = bookingService.bookPhone(username, phoneId);
         Assertions.assertNotNull(bookInfo);
@@ -49,7 +48,6 @@ public class BookingServiceTest {
     }
 
     @Test
-    @Transactional
     public void returnTest() {
         bookingService.bookPhone(username, phoneId);
         BookingInformationDTO bookInfo = bookingService.returnPhone(phoneId);
@@ -62,7 +60,6 @@ public class BookingServiceTest {
     }
 
     @Test
-    @Transactional
     public void doubleBookingTest() {
         bookingService.bookPhone(username, phoneId);
         BookingInformationDTO bookInfo = bookingService.bookPhone(username, phoneId);
@@ -75,7 +72,6 @@ public class BookingServiceTest {
     }
 
     @Test
-    @Transactional
     public void notFoundTest() {
         BookingInformationDTO bookInfo = bookingService.bookPhone(username, 74523L);
         Assertions.assertNotNull(bookInfo);

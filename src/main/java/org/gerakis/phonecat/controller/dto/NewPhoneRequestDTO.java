@@ -1,6 +1,7 @@
 package org.gerakis.phonecat.controller.dto;
 
 import com.google.gson.annotations.SerializedName;
+import org.apache.logging.log4j.util.Strings;
 
 import static org.gerakis.phonecat.util.FilterUtil.ALPHANUM_ONLY;
 
@@ -14,11 +15,11 @@ public record NewPhoneRequestDTO(
 ) {
     public NewPhoneRequestDTO {
         //sanitization
-        brand = brand.strip().replaceAll(ALPHANUM_ONLY, "");
-        model = model.strip().replaceAll(ALPHANUM_ONLY, "");
-        technology = technology.strip().replaceAll(ALPHANUM_ONLY, "");
-        bands2g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
-        bands3g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
-        bands4g = bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
+        brand = Strings.isEmpty(brand) ? brand : brand.strip().replaceAll(ALPHANUM_ONLY, "");
+        model = Strings.isEmpty(model) ? model : model.strip().replaceAll(ALPHANUM_ONLY, "");
+        technology = Strings.isEmpty(technology) ? technology : technology.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands2g = Strings.isEmpty(bands2g) ? brand : bands2g.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands3g = Strings.isEmpty(bands3g) ? bands3g : bands3g.strip().replaceAll(ALPHANUM_ONLY, "");
+        bands4g = Strings.isEmpty(bands4g) ? bands4g : bands4g.strip().replaceAll(ALPHANUM_ONLY, "");
     }
 }

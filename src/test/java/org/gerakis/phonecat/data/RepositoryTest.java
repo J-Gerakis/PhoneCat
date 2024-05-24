@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest(classes=org.gerakis.phonecat.PhoneCatApplication.class,
         properties = {"spring.datasource.url=jdbc:h2:mem:phonecat_test_db", "spring.liquibase.contexts=test"} )
@@ -50,7 +51,6 @@ public class RepositoryTest {
 
 
     @Test
-    @Transactional
     public void testInsertAndRetrievePhoneSimple() {
         Long createdPhoneId = repository.addPhone(brand, model, null);
 
@@ -67,7 +67,6 @@ public class RepositoryTest {
     }
 
     @Test
-    @Transactional
     public void testInsertAndRetrieveSpecification() {
         Long specId = repository.addSpecification(newSpecDTO);
 
@@ -85,7 +84,6 @@ public class RepositoryTest {
     }
 
     @Test
-    @Transactional
     public void insertAndRetrievePhoneFullTest() {
         Long specId = repository.addSpecification(newSpecDTO);
         Long phoneId = repository.addPhone(brand, model, specId);
@@ -106,7 +104,6 @@ public class RepositoryTest {
     }
 
     @Test
-    @Transactional
     public void updatePhoneTest() {
         Long createdPhoneId = repository.addPhone(brand, model, null);
 
@@ -125,7 +122,6 @@ public class RepositoryTest {
     }
 
     @Test
-    @Transactional
     public void updateSpecification() {
         String newtech = "New Tech";
         Long specId = repository.addSpecification(newSpecDTO);
@@ -140,7 +136,6 @@ public class RepositoryTest {
     }
 
     @Test
-    @Transactional
     @Disabled
     public void connectPhoneToNewSpecTest() {
         Long phoneId = repository.addPhone(brand, model, null);
@@ -154,7 +149,6 @@ public class RepositoryTest {
     }
 
     @Test
-    @Transactional
     public void deletePhoneTest() {
         Long phId = repository.addPhone(brand, model, null);
         repository.deletePhone(phId);
@@ -164,7 +158,6 @@ public class RepositoryTest {
 
 
     @Test
-    @Transactional
     public void getListTest() {
         repository.addPhone(brand, model, null);
         repository.addPhone(brand, model, null);
