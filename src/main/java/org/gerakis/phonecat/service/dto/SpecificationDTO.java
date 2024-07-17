@@ -11,4 +11,8 @@ public record SpecificationDTO(
         @SerializedName("_3g_bands") String bands3g,
         @SerializedName("_4g_bands") String bands4g
 ) {
+    public static SpecificationDTO EmptySpecificationDTO() {
+        return new SpecificationDTO(0L, null, null, null, null, null, null);
+
+    }
 }

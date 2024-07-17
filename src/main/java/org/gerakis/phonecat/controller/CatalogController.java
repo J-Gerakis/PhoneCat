@@ -12,6 +12,7 @@ import org.gerakis.phonecat.exception.PhoneCatException;
 import org.gerakis.phonecat.service.CatalogMaintenanceService;
 import org.gerakis.phonecat.service.dto.FullPhoneRecordDTO;
 import org.gerakis.phonecat.controller.dto.NewSpecificationDTO;
+import org.gerakis.phonecat.service.dto.PhoneDTO;
 import org.gerakis.phonecat.util.DateAdapter;
 import org.gerakis.phonecat.util.FilterUtil;
 import org.springframework.web.bind.annotation.*;
@@ -100,7 +101,7 @@ public class CatalogController {
         model.ifPresent(s -> filterParam.put(FilterUtil.MODEL, s));
         available.ifPresent(s -> filterParam.put(FilterUtil.AVAILABLE, s));
         logger.debug("Filter param: {}, {}, {}", brand, model, available);
-        List<FullPhoneRecordDTO> list = catalogService.getAllPhones(filterParam);
+        List<PhoneDTO> list = catalogService.getAllPhones(filterParam);
         logger.debug("List size: {}", list.size());
         return gson.toJson(list);
     }
@@ -111,7 +112,7 @@ public class CatalogController {
             logger.warn("negative phone Id");
             throw new PhoneCatException("Phone id must be positive");
         }
-        Optional<FullPhoneRecordDTO> record = catalogService.getFullPhoneRecord(phoneId);
+        Optional<PhoneDTO> record = catalogService.getPhone(phoneId);
         if(record.isPresent()) {
             logger.debug("phone found: {}", phoneId);
             return gson.toJson(record.get());

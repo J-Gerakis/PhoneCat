@@ -59,29 +59,34 @@ public class CatalogMaintenanceService {
         phoneCatRepository.deletePhone(phoneId);
     }
 
-    public List<FullPhoneRecordDTO> getAllPhones(Map<String, String> filter) {
-        List<FullPhoneRecordDTO> list = phoneCatRepository.getAllPhones();
+    public List<PhoneDTO> getAllPhones(Map<String, String> filter) {
+        List<PhoneDTO> list = phoneCatRepository.getAllPhones(filter);
         logger.debug("Pre filter list size {}", list.size());
-        return list.stream().filter(s-> applyCriteria(s, filter)).toList();
+        return list; //todo: replace filter with query parameters
+        //return list.stream().filter(s-> applyCriteria(s, filter)).toList();
     }
 
-    public Optional<FullPhoneRecordDTO> getFullPhoneRecord(Long phoneId) {
-        return phoneCatRepository.getFullPhoneRecord(phoneId);
+//    public Optional<FullPhoneRecordDTO> getFullPhoneRecord(Long phoneId) {
+//        return phoneCatRepository.getFullPhoneRecord(phoneId);
+//    }
+
+    public Optional<PhoneDTO> getPhone(Long phoneId) {
+        return phoneCatRepository.getPhone(phoneId);
     }
 
-    private boolean applyCriteria(FullPhoneRecordDTO recordDTO, Map<String, String> filter) {
-        boolean match = true;
-        if(filter.containsKey(FilterUtil.BRAND)) {
-            match = match && recordDTO.brand().equalsIgnoreCase(filter.get(FilterUtil.BRAND));
-        }
-        if(filter.containsKey(FilterUtil.MODEL)) {
-            match = match && recordDTO.model().equalsIgnoreCase(filter.get(FilterUtil.MODEL));
-        }
-        if(filter.containsKey(FilterUtil.AVAILABLE)) {
-            match = match && recordDTO.isAvailable().equals(Boolean.parseBoolean(filter.get(FilterUtil.AVAILABLE)));
-        }
-        return match;
-    }
+//    private boolean applyCriteria(PhoneDTO recordDTO, Map<String, String> filter) {
+//        boolean match = true;
+//        if(filter.containsKey(FilterUtil.BRAND)) {
+//            match = match && recordDTO.brand().equalsIgnoreCase(filter.get(FilterUtil.BRAND));
+//        }
+//        if(filter.containsKey(FilterUtil.MODEL)) {
+//            match = match && recordDTO.model().equalsIgnoreCase(filter.get(FilterUtil.MODEL));
+//        }
+//        if(filter.containsKey(FilterUtil.AVAILABLE)) {
+//            match = match && recordDTO.isAvailable().equals(Boolean.parseBoolean(filter.get(FilterUtil.AVAILABLE)));
+//        }
+//        return match;
+//    }
 
     private Long getOrCreateSpecification(NewPhoneRequestDTO newPhoneReqDTO) {
         NewSpecificationDTO specDto = null;

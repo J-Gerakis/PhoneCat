@@ -7,6 +7,8 @@ import org.gerakis.phonecat.controller.dto.NewPhoneRequestDTO;
 import org.gerakis.phonecat.controller.dto.NewSpecificationDTO;
 import org.gerakis.phonecat.data.PhoneCatRepository;
 import org.gerakis.phonecat.service.dto.FullPhoneRecordDTO;
+import org.gerakis.phonecat.service.dto.PhoneDTO;
+import org.gerakis.phonecat.service.dto.SpecificationDTO;
 import org.gerakis.phonecat.util.FilterUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -67,19 +69,21 @@ public class CatalogServiceTest {
         NewPhoneRequestDTO request = new NewPhoneRequestDTO(brand, model, null, null,null,null);
         Long phoneId = catalogService.addNewPhone(request);
 
-        Optional<FullPhoneRecordDTO> optPhone = repository.getFullPhoneRecord(phoneId);
+        Optional<PhoneDTO> optPhone = repository.getPhone(phoneId);
         Assertions.assertTrue(optPhone.isPresent());
-        FullPhoneRecordDTO fullPhone = optPhone.get();
+        PhoneDTO fullPhone = optPhone.get();
 
         Assertions.assertEquals(brand, fullPhone.brand());
         Assertions.assertEquals(model, fullPhone.model());
         Assertions.assertEquals(true, fullPhone.isAvailable());
         Assertions.assertEquals(Strings.EMPTY, fullPhone.borrowerUsername());
         Assertions.assertNull(fullPhone.borrowDate());
-        Assertions.assertEquals(tech, fullPhone.technology());
-        Assertions.assertEquals(g2, fullPhone.bands2g());
-        Assertions.assertEquals(g3, fullPhone.bands3g());
-        Assertions.assertEquals(g4, fullPhone.bands4g());
+        Assertions.assertNotNull(fullPhone.specRef());
+        SpecificationDTO spec = fullPhone.specRef();
+        Assertions.assertEquals(tech, spec.technology());
+        Assertions.assertEquals(g2, spec.bands2g());
+        Assertions.assertEquals(g3, spec.bands3g());
+        Assertions.assertEquals(g4, spec.bands4g());
 
     }
 
@@ -89,19 +93,21 @@ public class CatalogServiceTest {
         NewPhoneRequestDTO request = new NewPhoneRequestDTO(brand, model, tech, g2,g3,g4);
         Long phoneId = catalogService.addNewPhone(request);
 
-        Optional<FullPhoneRecordDTO> optPhone = repository.getFullPhoneRecord(phoneId);
+        Optional<PhoneDTO> optPhone = repository.getPhone(phoneId);
         Assertions.assertTrue(optPhone.isPresent());
-        FullPhoneRecordDTO fullPhone = optPhone.get();
+        PhoneDTO fullPhone = optPhone.get();
 
         Assertions.assertEquals(brand, fullPhone.brand());
         Assertions.assertEquals(model, fullPhone.model());
         Assertions.assertEquals(true, fullPhone.isAvailable());
         Assertions.assertEquals(Strings.EMPTY, fullPhone.borrowerUsername());
         Assertions.assertNull(fullPhone.borrowDate());
-        Assertions.assertEquals(tech, fullPhone.technology());
-        Assertions.assertEquals(g2, fullPhone.bands2g());
-        Assertions.assertEquals(g3, fullPhone.bands3g());
-        Assertions.assertEquals(g4, fullPhone.bands4g());
+        Assertions.assertNotNull(fullPhone.specRef());
+        SpecificationDTO spec = fullPhone.specRef();
+        Assertions.assertEquals(tech, spec.technology());
+        Assertions.assertEquals(g2, spec.bands2g());
+        Assertions.assertEquals(g3, spec.bands3g());
+        Assertions.assertEquals(g4, spec.bands4g());
     }
 
     @Test
@@ -111,19 +117,21 @@ public class CatalogServiceTest {
         NewPhoneRequestDTO request = new NewPhoneRequestDTO(brand, model, null, null,null,null);
         Long phoneId = catalogService.addNewPhone(request);
 
-        Optional<FullPhoneRecordDTO> optPhone = repository.getFullPhoneRecord(phoneId);
+        Optional<PhoneDTO> optPhone = repository.getPhone(phoneId);
         Assertions.assertTrue(optPhone.isPresent());
-        FullPhoneRecordDTO fullPhone = optPhone.get();
+        PhoneDTO fullPhone = optPhone.get();
 
         Assertions.assertEquals(brand, fullPhone.brand());
         Assertions.assertEquals(model, fullPhone.model());
         Assertions.assertEquals(true, fullPhone.isAvailable());
         Assertions.assertEquals(Strings.EMPTY, fullPhone.borrowerUsername());
         Assertions.assertNull(fullPhone.borrowDate());
-        Assertions.assertEquals(tech, fullPhone.technology());
-        Assertions.assertEquals(g2, fullPhone.bands2g());
-        Assertions.assertEquals(g3, fullPhone.bands3g());
-        Assertions.assertEquals(g4, fullPhone.bands4g());
+        Assertions.assertNotNull(fullPhone.specRef());
+        SpecificationDTO spec = fullPhone.specRef();
+        Assertions.assertEquals(tech, spec.technology());
+        Assertions.assertEquals(g2, spec.bands2g());
+        Assertions.assertEquals(g3, spec.bands3g());
+        Assertions.assertEquals(g4, spec.bands4g());
     }
 
     @Test
@@ -131,19 +139,21 @@ public class CatalogServiceTest {
         NewPhoneRequestDTO request = new NewPhoneRequestDTO(brand, model, null, null,null,null);
         Long phoneId = catalogService.addNewPhone(request);
         catalogService.addOrUpdateNewSpecification(newSpecDTO);
-        Optional<FullPhoneRecordDTO> optPhone = repository.getFullPhoneRecord(phoneId);
+        Optional<PhoneDTO> optPhone = repository.getPhone(phoneId);
         Assertions.assertTrue(optPhone.isPresent());
-        FullPhoneRecordDTO fullPhone = optPhone.get();
+        PhoneDTO fullPhone = optPhone.get();
 
         Assertions.assertEquals(brand, fullPhone.brand());
         Assertions.assertEquals(model, fullPhone.model());
         Assertions.assertEquals(true, fullPhone.isAvailable());
         Assertions.assertEquals(Strings.EMPTY, fullPhone.borrowerUsername());
         Assertions.assertNull(fullPhone.borrowDate());
-        Assertions.assertEquals(tech, fullPhone.technology());
-        Assertions.assertEquals(g2, fullPhone.bands2g());
-        Assertions.assertEquals(g3, fullPhone.bands3g());
-        Assertions.assertEquals(g4, fullPhone.bands4g());
+        Assertions.assertNotNull(fullPhone.specRef());
+        SpecificationDTO spec = fullPhone.specRef();
+        Assertions.assertEquals(tech, spec.technology());
+        Assertions.assertEquals(g2, spec.bands2g());
+        Assertions.assertEquals(g3, spec.bands3g());
+        Assertions.assertEquals(g4, spec.bands4g());
     }
 
     @Test
@@ -153,7 +163,7 @@ public class CatalogServiceTest {
         repository.addPhone("Apple", "iPhone 14", null);
         Map<String, String> filterParams = new HashMap<>();
         filterParams.put(FilterUtil.BRAND, "Samsung");
-        List<FullPhoneRecordDTO> list = catalogService.getAllPhones(filterParams);
+        List<PhoneDTO> list = catalogService.getAllPhones(filterParams);
 
         Assertions.assertEquals(2, list.size());
         list.forEach(p -> Assertions.assertEquals("Samsung", p.brand()));

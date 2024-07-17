@@ -18,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,19 +89,22 @@ public class RepositoryTest {
         Long specId = repository.addSpecification(newSpecDTO);
         Long phoneId = repository.addPhone(brand, model, specId);
 
-        Optional<FullPhoneRecordDTO> optFullPhone = repository.getFullPhoneRecord(phoneId);
+        Optional<PhoneDTO> optFullPhone = repository.getPhone(phoneId);
         Assertions.assertTrue(optFullPhone.isPresent());
 
-        FullPhoneRecordDTO fullPhone = optFullPhone.get();
+        PhoneDTO fullPhone = optFullPhone.get();
         Assertions.assertEquals(brand, fullPhone.brand());
         Assertions.assertEquals(model, fullPhone.model());
         Assertions.assertEquals(true, fullPhone.isAvailable());
         Assertions.assertEquals(Strings.EMPTY, fullPhone.borrowerUsername());
         Assertions.assertNull(fullPhone.borrowDate());
-        Assertions.assertEquals(tech, fullPhone.technology());
-        Assertions.assertEquals(g2, fullPhone.bands2g());
-        Assertions.assertEquals(g3, fullPhone.bands3g());
-        Assertions.assertEquals(g4, fullPhone.bands4g());
+
+        Assertions.assertNotNull(fullPhone.specRef());
+        SpecificationDTO spec = fullPhone.specRef();
+        Assertions.assertEquals(tech, spec.technology());
+        Assertions.assertEquals(g2, spec.bands2g());
+        Assertions.assertEquals(g3, spec.bands3g());
+        Assertions.assertEquals(g4, spec.bands4g());
     }
 
     @Test
@@ -145,7 +149,8 @@ public class RepositoryTest {
         Assertions.assertTrue(optPhone.isPresent());
 
         PhoneDTO phone = optPhone.get();
-        Assertions.assertEquals(specId, phone.specRef());
+        Assertions.assertNotNull(phone.specRef());
+        Assertions.assertEquals(specId, phone.specRef().specRefId());
     }
 
     @Test
@@ -162,7 +167,7 @@ public class RepositoryTest {
         repository.addPhone(brand, model, null);
         repository.addPhone(brand, model, null);
         repository.addPhone(brand, model, null);
-        List<FullPhoneRecordDTO> list = repository.getAllPhones();
+        List<PhoneDTO> list = repository.getAllPhones(new HashMap<>());
         Assertions.assertEquals(3, list.size());
     }
 

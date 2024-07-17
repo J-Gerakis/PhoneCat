@@ -3,6 +3,7 @@ package org.gerakis.phonecat.data;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.TypedQuery;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.util.Strings;
@@ -10,10 +11,12 @@ import org.gerakis.phonecat.controller.dto.NewSpecificationDTO;
 import org.gerakis.phonecat.service.dto.*;
 import org.gerakis.phonecat.service.mapper.PhoneMapper;
 import org.gerakis.phonecat.service.mapper.SpecMapper;
+import org.gerakis.phonecat.util.FilterUtil;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -113,16 +116,19 @@ public class PhoneCatRepository {
         return Optional.of(PhoneMapper.entityToDTO(phoneEntity));
     }
 
-    public Optional<FullPhoneRecordDTO> getFullPhoneRecord(Long phoneId) {
-        Query namedQuery = entityManager.createNamedQuery("Phone.findFullRecord");
-        namedQuery.setParameter("id", phoneId);
-        return Optional.of((FullPhoneRecordDTO) namedQuery.getResultStream().findFirst().orElse(null));
-    }
+//    public Optional<FullPhoneRecordDTO> getFullPhoneRecord(Long phoneId) {
+//        Query namedQuery = entityManager.createNamedQuery("Phone.findFullRecord");
+//        namedQuery.setParameter("id", phoneId);
+//        return Optional.of((FullPhoneRecordDTO) namedQuery.getResultStream().findFirst().orElse(null));
+//    }
 
-    public List<FullPhoneRecordDTO> getAllPhones() {
-        Query namedQuery = entityManager.createNamedQuery("Phone.search");
+    public List<PhoneDTO> getAllPhones(Map<String, String> filter) {
+        TypedQuery<PhoneEntity> namedQuery = entityManager.createNamedQuery("Phone.getAll", PhoneEntity.class);
         logger.debug("executing query: {}", namedQuery.toString());
-        return namedQuery.getResultList();
+        return namedQuery.getResultList().stream()
+                .filter(s-> applyCriteria(s, filter))
+                .map(PhoneMapper::entityToDTO)
+                .toList();
     }
 
     public void deletePhone(Long phoneId) {
@@ -135,4 +141,17 @@ public class PhoneCatRepository {
         }
     }
 
+    private boolean applyCriteria(PhoneEntity entity, Map<String, String> filter) {
+        boolean match = true;
+        if(filter.containsKey(FilterUtil.BRAND)) {
+            match = match && entity.brand.equalsIgnoreCase(filter.get(FilterUtil.BRAND));
+        }
+        if(filter.containsKey(FilterUtil.MODEL)) {
+            match = match && entity.model.equalsIgnoreCase(filter.get(FilterUtil.MODEL));
+        }
+        if(filter.containsKey(FilterUtil.AVAILABLE)) {
+            match = match && entity.isAvailable;
+        }
+        return match;
+    }
 }

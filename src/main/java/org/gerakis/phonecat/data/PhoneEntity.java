@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
         "FROM Phone ph LEFT JOIN Spec_Ref sp ON ph.spec_ref_id = sp.spec_ref_id", resultSetMapping = "Phone.fullRecord")
 
 @NamedNativeQuery(name = "Phone.updateSpec", query = "UPDATE Phone ph SET ph.spec_ref_id = :spec_ref_id WHERE UPPER(brand) = UPPER(:brand) AND UPPER(model) = UPPER(:model)")
-
+@NamedQuery(name = "Phone.getAll", query = "select p from PhoneEntity p")
 @Entity
 @Table(name = "Phone")
 @Getter
