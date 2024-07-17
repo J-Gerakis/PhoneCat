@@ -1,7 +1,6 @@
 package org.gerakis.phonecat.data;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +36,11 @@ public class PhoneCatRepository {
         phoneEntity.setAvailable(true);
         phoneEntity.setBorrowerUsername(Strings.EMPTY);
         phoneEntity.setBorrowDate(null);
-        phoneEntity.setSpecRefId(specRefId);
+        if(specRefId != null) {
+            SpecificationEntity specEntity = entityManager.find(SpecificationEntity.class, specRefId);
+            phoneEntity.setSpecRef(specEntity);
+        }
+
         logger.debug("Creating new phone entry");
         entityManager.persist(phoneEntity);
         entityManager.flush();

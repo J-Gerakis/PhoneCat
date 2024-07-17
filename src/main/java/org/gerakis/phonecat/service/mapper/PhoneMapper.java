@@ -12,7 +12,7 @@ public class PhoneMapper {
                 phoneEntity.isAvailable(),
                 phoneEntity.getBorrowerUsername(),
                 phoneEntity.getBorrowDate(),
-                phoneEntity.getSpecRefId()
+                SpecMapper.entityToDto(phoneEntity.getSpecRef())
         );
     }
 
@@ -24,7 +24,7 @@ public class PhoneMapper {
         entity.setAvailable(phoneDTO.isAvailable());
         entity.setBorrowerUsername(phoneDTO.borrowerUsername());
         entity.setBorrowDate(phoneDTO.borrowDate());
-        entity.setSpecRefId(phoneDTO.specRefId());
+        entity.setSpecRef(SpecMapper.dtoToEntity(phoneDTO.specRef()));
         return entity;
     }
 }

@@ -53,8 +53,9 @@ public class PhoneEntity {
     @Column(name = "borrow_date")
     LocalDateTime borrowDate;
 
-    @Column(name = "spec_ref_id")
-    Long specRefId;
+    @JoinColumn(name = "spec_ref_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    SpecificationEntity specRef;
 
     public PhoneEntity() {}
 }

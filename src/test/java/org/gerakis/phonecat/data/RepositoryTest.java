@@ -63,7 +63,7 @@ public class RepositoryTest {
         Assertions.assertEquals(true, phone.isAvailable());
         Assertions.assertEquals(Strings.EMPTY, phone.borrowerUsername());
         Assertions.assertNull(phone.borrowDate());
-        Assertions.assertNull(phone.specRefId());
+        Assertions.assertNull(phone.specRef());
     }
 
     @Test
@@ -145,7 +145,7 @@ public class RepositoryTest {
         Assertions.assertTrue(optPhone.isPresent());
 
         PhoneDTO phone = optPhone.get();
-        Assertions.assertEquals(specId, phone.specRefId());
+        Assertions.assertEquals(specId, phone.specRef());
     }
 
     @Test
