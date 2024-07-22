@@ -8,7 +8,7 @@ import org.gerakis.phonecat.service.dto.SpecificationDTO;
 public class SpecMapper {
 
     public static SpecificationDTO entityToDto (SpecificationEntity entity) {
-        if (entity == null) { return SpecificationDTO.EmptySpecificationDTO(); }
+        if (entity == null) { return null; }
         return new SpecificationDTO(
                 entity.getSpecRefId(),
                 entity.getBrand(),
