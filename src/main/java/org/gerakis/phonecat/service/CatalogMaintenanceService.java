@@ -7,7 +7,6 @@ import org.gerakis.phonecat.controller.dto.NewSpecificationDTO;
 import org.gerakis.phonecat.data.PhoneCatRepository;
 import org.gerakis.phonecat.service.dto.*;
 import org.gerakis.phonecat.service.mapper.SpecMapper;
-import org.gerakis.phonecat.util.FilterUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -63,30 +62,13 @@ public class CatalogMaintenanceService {
         List<PhoneDTO> list = phoneCatRepository.getAllPhones(filter);
         logger.debug("Pre filter list size {}", list.size());
         return list; //todo: replace filter with query parameters
-        //return list.stream().filter(s-> applyCriteria(s, filter)).toList();
     }
 
-//    public Optional<FullPhoneRecordDTO> getFullPhoneRecord(Long phoneId) {
-//        return phoneCatRepository.getFullPhoneRecord(phoneId);
-//    }
 
     public Optional<PhoneDTO> getPhone(Long phoneId) {
         return phoneCatRepository.getPhone(phoneId);
     }
 
-//    private boolean applyCriteria(PhoneDTO recordDTO, Map<String, String> filter) {
-//        boolean match = true;
-//        if(filter.containsKey(FilterUtil.BRAND)) {
-//            match = match && recordDTO.brand().equalsIgnoreCase(filter.get(FilterUtil.BRAND));
-//        }
-//        if(filter.containsKey(FilterUtil.MODEL)) {
-//            match = match && recordDTO.model().equalsIgnoreCase(filter.get(FilterUtil.MODEL));
-//        }
-//        if(filter.containsKey(FilterUtil.AVAILABLE)) {
-//            match = match && recordDTO.isAvailable().equals(Boolean.parseBoolean(filter.get(FilterUtil.AVAILABLE)));
-//        }
-//        return match;
-//    }
 
     private Long getOrCreateSpecification(NewPhoneRequestDTO newPhoneReqDTO) {
         NewSpecificationDTO specDto = null;

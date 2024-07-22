@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.StringJoiner;
 
 @Repository
 @Transactional
@@ -75,11 +76,11 @@ public class PhoneCatRepository {
     }
 
     private SpecificationEntity findSpecificationEntry(String brand, String model) {
-        Query namedQuery = entityManager.createNamedQuery("Spec.search", SpecificationEntity.class);
+        TypedQuery<SpecificationEntity> namedQuery = entityManager.createNamedQuery("Spec.search", SpecificationEntity.class);
         namedQuery.setParameter("brand", brand);
         namedQuery.setParameter("model", model);
         logger.debug("Looking up specification entry {} {}", brand, model);
-        return (SpecificationEntity) namedQuery.getResultStream().findFirst().orElse(null);
+        return namedQuery.getResultStream().findFirst().orElse(null);
     }
 
     public Optional<SpecificationDTO> findSpecification(String brand, String model) {
@@ -116,17 +117,25 @@ public class PhoneCatRepository {
         return Optional.of(PhoneMapper.entityToDTO(phoneEntity));
     }
 
-//    public Optional<FullPhoneRecordDTO> getFullPhoneRecord(Long phoneId) {
-//        Query namedQuery = entityManager.createNamedQuery("Phone.findFullRecord");
-//        namedQuery.setParameter("id", phoneId);
-//        return Optional.of((FullPhoneRecordDTO) namedQuery.getResultStream().findFirst().orElse(null));
-//    }
-
     public List<PhoneDTO> getAllPhones(Map<String, String> filter) {
-        TypedQuery<PhoneEntity> namedQuery = entityManager.createNamedQuery("Phone.getAll", PhoneEntity.class);
+        TypedQuery<PhoneEntity> namedQuery = entityManager.createNamedQuery("Phone.getWithFilter", PhoneEntity.class);
+        if(filter.containsKey(FilterUtil.BRAND)) {
+            namedQuery.setParameter("brand", "%"+filter.get(FilterUtil.BRAND).toUpperCase()+"%");
+        } else {
+            namedQuery.setParameter("brand", "%");
+        }
+        if(filter.containsKey(FilterUtil.MODEL)) {
+            namedQuery.setParameter("model", "%"+filter.get(FilterUtil.MODEL).toUpperCase()+"%");
+        } else {
+            namedQuery.setParameter("model", "%");
+        }
+        if(filter.containsKey(FilterUtil.AVAILABLE)) {
+            namedQuery.setParameter("available", Boolean.parseBoolean(filter.get(FilterUtil.AVAILABLE)));
+        } else {
+            namedQuery.setParameter("available", true);
+        }
         logger.debug("executing query: {}", namedQuery.toString());
         return namedQuery.getResultList().stream()
-                .filter(s-> applyCriteria(s, filter))
                 .map(PhoneMapper::entityToDTO)
                 .toList();
     }
@@ -141,17 +150,4 @@ public class PhoneCatRepository {
         }
     }
 
-    private boolean applyCriteria(PhoneEntity entity, Map<String, String> filter) {
-        boolean match = true;
-        if(filter.containsKey(FilterUtil.BRAND)) {
-            match = match && entity.brand.equalsIgnoreCase(filter.get(FilterUtil.BRAND));
-        }
-        if(filter.containsKey(FilterUtil.MODEL)) {
-            match = match && entity.model.equalsIgnoreCase(filter.get(FilterUtil.MODEL));
-        }
-        if(filter.containsKey(FilterUtil.AVAILABLE)) {
-            match = match && entity.isAvailable;
-        }
-        return match;
-    }
 }
