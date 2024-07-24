@@ -134,10 +134,13 @@ output (example):
   "is_available": true,
   "borrower_username": null,
   "borrow_date": null,
-  "technology": "ss8T",
-  "_2g_bands": "2g",
-  "_3g_bands": "2g",
-  "_4g_bands": "2g"
+  "spec_ref": {
+    "spec_ref_id": 4
+    "technology": "ss8T",
+    "_2g_bands": "2g",
+    "_3g_bands": "2g",
+    "_4g_bands": "2g"
+  }
 }
 ```
 Return a single phone's detail.
@@ -161,10 +164,13 @@ output:
     "is_available": true,
     "borrower_username": null,
     "borrow_date": null,
-    "technology": "ss8T",
-    "_2g_bands": "2g",
-    "_3g_bands": "2g",
-    "_4g_bands": "2g"
+    "spec_ref": {
+        "spec_ref_id": 4
+        "technology": "ss8T",
+        "_2g_bands": "2g",
+        "_3g_bands": "2g",
+        "_4g_bands": "2g"
+    }
   },
   {
     "phone_id": 10,
@@ -173,10 +179,13 @@ output:
     "is_available": true,
     "borrower_username": null,
     "borrow_date": null,
-    "technology": "old",
-    "_2g_bands": "2g",
-    "_3g_bands": "3g",
-    "_4g_bands": "4g"
+    "spec_ref": {
+        "spec_ref_id": 3
+        "technology": "old",
+        "_2g_bands": "2g",
+        "_3g_bands": "3g",
+        "_4g_bands": "4g"
+    }
   },
   {
     "phone_id": 11,
@@ -185,10 +194,13 @@ output:
     "is_available": true,
     "borrower_username": "",
     "borrow_date": null,
-    "technology": "some tech",
-    "_2g_bands": "2G",
-    "_3g_bands": "2G",
-    "_4g_bands": "2G"
+    "spec_ref": {
+        "spec_ref_id": 5
+        "technology": "some tech",
+        "_2g_bands": "2G",
+        "_3g_bands": "2G",
+        "_4g_bands": "2G"
+    }
   }
 ]
 ```
